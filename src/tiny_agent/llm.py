@@ -24,9 +24,17 @@ class LLM:
         )
         with urllib.request.urlopen(req) as r:
             result = json.loads(r.read())
+
         message = result["choices"][0]["message"]
+        usage = result.get("usage", {})
+
         return Response(
             content=message.get("content", ""),
             reasoning=message.get("reasoning"),
-            metadata={"model": self.model},
+            metadata={
+                "model": result.get("model", self.model),
+                "prompt_tokens": usage.get("prompt_tokens"),
+                "completion_tokens": usage.get("completion_tokens"),
+                "total_tokens": usage.get("total_tokens"),
+            },
         )
