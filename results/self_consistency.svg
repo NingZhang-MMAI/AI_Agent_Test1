@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="220" viewBox="0 0 760 220">
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="36" font-size="24" font-weight="700">Self-consistency: answer frequency</text>
+<text x="20" y="58" font-size="14">Local Gemma model via TinyAgent</text>
+<text x="20" y="93" font-size="18">Answer 11</text><rect x="170" y="70" width="500" height="34" rx="4" fill="#4f46e5" /><text x="682" y="93" font-size="18">10</text>
+</svg>

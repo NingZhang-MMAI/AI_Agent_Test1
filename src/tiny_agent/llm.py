@@ -13,12 +13,17 @@ class Response:
 
 
 class LLM:
-    def __init__(self, model="gemma4:e4b", url="http://localhost:11434/v1/chat/completions"):
+    def __init__(self, model="gemma4:e4b", temperature=0, url="http://localhost:11434/v1/chat/completions"):
         self.model = model
+        self.temperature = temperature
         self.url = url
 
     def generate(self, messages) -> Response:
-        data = json.dumps({"model": self.model, "messages": messages}).encode("utf-8")
+        data = json.dumps({
+            "model": self.model,
+            "messages": messages,
+            "temperature": self.temperature,
+        }).encode("utf-8")
         req = urllib.request.Request(
             url=self.url, data=data, headers={"Content-Type": "application/json"}
         )

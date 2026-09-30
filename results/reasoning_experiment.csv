@@ -1,0 +1,112 @@
+label,parsed_answer,prompt_tokens,completion_tokens,total_tokens,content
+direct,,49,272,321,"You can see **11** penguins.
+
+Here is the breakdown:
+
+1. **Start:** 9 penguins
+2. **Disappear:** 9 - 2 = 7 penguins visible
+3. **Appear:** 7 + 4 = 11 penguins visible"
+zero_shot_cot,,57,362,419,"This is how we figure it out step by step:
+
+**1. Start with the initial count:**
+You saw 9 penguins.
+
+**2. Account for the penguins that disappeared:**
+2 penguins slid into the water and disappeared.
+$9 - 2 = 7$ penguins visible.
+
+**3. Account for the penguins that appeared:**
+4 penguins waddled up from the shore.
+$7 + 4 = 11$ penguins visible.
+
+You can see **11** penguins."
+self_consistency_1,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_2,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_3,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_4,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_5,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_6,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_7,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_8,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_9,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
+self_consistency_10,11,69,407,476,"*   **Start:** You saw 9 penguins.
+*   **Action 1 (Disappearing):** 2 slid into the water and disappeared from sight.
+    *   Visible count: $9 - 2 = 7$.
+*   **Action 2 (Appearing):** 4 waddled up from the shore.
+    *   Visible count: $7 + 4 = 11$.
+
+You can see 11 penguins.
+
+FINAL_ANSWER: 11"
