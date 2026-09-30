@@ -40,20 +40,4 @@ python reasoning_experiment.py
 
 ## Research Direction
 
-The project begins with reasoning in isolation and will later extend toward:
-
-```text
-Reasoning
-  ↓
-Planning
-  ↓
-Tool selection
-  ↓
-Action
-  ↓
-Observation
-  ↓
-Reflection
-```
-
-The conceptual bridge to agent behavior is informed by Chain-of-Thought, Self-Consistency, ReAct, and test-time-compute research.
+The project begins with reasoning in isolation and will later extend toward planning, tool selection, action, observation, and reflection. The conceptual bridge to agent behavior is informed by Chain-of-Thought, Self-Consistency, ReAct, and test-time-compute research.
