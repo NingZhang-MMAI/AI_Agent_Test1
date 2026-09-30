@@ -20,24 +20,6 @@ Large language models can generate useful answers directly from text prompts. An
 
 This makes reasoning important not only as a way to improve answers, but as a possible **decision layer** within an agent.
 
-A useful abstraction is:
-
-```text
-User goal
-   ↓
-Reasoning
-   ↓
-Decision
-   ↓
-Action
-   ↓
-Observation
-   ↓
-Reasoning / reflection
-   ↓
-Next decision
-```
-
 This framing is closely related to the ReAct approach, which interleaves reasoning traces with actions and observations. Rather than immediately implementing a complete ReAct-style agent, this study begins by isolating the reasoning component in a small local setup.
 
 The objective is not to claim that two local models represent all reasoning systems. Instead, the project is a limited empirical study designed to answer a narrower question first:
@@ -93,67 +75,17 @@ Those capabilities are reserved for later phases.
 
 Wei et al. introduced **Chain-of-Thought Prompting**, showing that providing intermediate reasoning demonstrations can improve performance on arithmetic, commonsense, and symbolic reasoning tasks. The central idea is that instead of mapping directly from question to answer, the model generates intermediate reasoning steps.
 
-Conceptually:
-
-```text
-Standard prompting
-
-Question
-   ↓
-Answer
-```
-
-versus:
-
-```text
-Chain-of-Thought prompting
-
-Question
-   ↓
-Intermediate reasoning
-   ↓
-Answer
-```
-
 This motivates the first comparison in this study: direct prompting versus an explicit step-by-step reasoning instruction.
 
 ### 3.2 Self-consistency
 
 Wang et al. proposed **self-consistency**, which samples multiple reasoning paths and chooses the most consistent final answer rather than relying on a single greedy reasoning trajectory.
 
-```text
-Question
- ├─ Reasoning path A → answer X
- ├─ Reasoning path B → answer X
- ├─ Reasoning path C → answer Y
- └─ Reasoning path D → answer X
-                 ↓
-           majority / consistency
-                 ↓
-                 X
-```
-
 This motivates the repeated-run experiment in this project.
 
 ### 3.3 ReAct: reasoning linked to acting
 
 Yao et al. proposed **ReAct**, which combines reasoning traces with actions and observations. ReAct is particularly important to this project because it provides the conceptual bridge between reasoning and agency.
-
-A simplified ReAct-style loop is:
-
-```text
-Goal
- ↓
-Reason
- ↓
-Action
- ↓
-Observation
- ↓
-Reason
- ↓
-Next action
-```
 
 The present study does not yet reproduce a complete ReAct agent. Instead, it isolates the reasoning layer that would later support action selection, planning, and revision.
 
@@ -175,49 +107,19 @@ The form describes how reasoning behavior is produced.
 
 #### Direct generation
 
-```text
-Question
-   ↓
-Model
-   ↓
-Answer
-```
+The model answers the question without an explicit instruction to produce intermediate reasoning.
 
 #### Prompt-induced reasoning
 
-```text
-Question
-+
-"Let's think step by step."
-   ↓
-Intermediate reasoning
-   ↓
-Answer
-```
+The model is explicitly instructed to reason step by step before producing an answer.
 
 #### Native reasoning
 
-```text
-Question
-   ↓
-Reasoning-trained model
-   ↓
-Native reasoning behavior
-   ↓
-Answer
-```
+The model has been trained or post-trained to produce reasoning behavior without requiring an explicit step-by-step instruction.
 
 #### Search-enhanced reasoning
 
-```text
-Question
-   ↓
-Multiple candidate reasoning paths
-   ↓
-Consistency or verifier
-   ↓
-Selected answer
-```
+Multiple candidate reasoning paths are generated and then compared using consistency or a verifier before selecting a final answer.
 
 ### 4.2 Quality of reasoning
 
@@ -238,25 +140,7 @@ In Phase 1, the measurable dimensions are restricted to:
 
 ### 4.3 Link to agent decision-making
 
-The long-term model of the project is:
-
-```text
-Reasoning
-   ↓
-Task decomposition
-   ↓
-Plan
-   ↓
-Action / tool selection
-   ↓
-Observation
-   ↓
-Reflection
-   ↓
-Revised decision
-```
-
-The present experiments study only the first part of that chain.
+In the longer-term project, reasoning will be studied as a foundation for task decomposition, planning, action or tool selection, interpretation of observations, reflection, and revision of decisions. The present experiments study only the reasoning component.
 
 ---
 
@@ -264,25 +148,7 @@ The present experiments study only the first part of that chain.
 
 ### 5.1 Software architecture
 
-The experimental system uses a minimal TinyAgent written in Python.
-
-```text
-User task
-    ↓
-TinyAgent.run()
-    ↓
-LLM.generate()
-    ↓
-JSON / HTTP request
-    ↓
-Ollama
-    ↓
-Local Gemma model
-    ↓
-Response
-    ↓
-Trajectory / experiment log
-```
+The experimental system uses a minimal TinyAgent written in Python. TinyAgent sends requests through an LLM wrapper to a locally hosted Ollama endpoint, receives the model response, and records the output and experiment metadata.
 
 ### 5.2 Local inference
 
@@ -510,25 +376,7 @@ The next experiment is intentionally limited to the same two local models.
 
 ### 10.2 Main comparison
 
-The experiment is designed to distinguish:
-
-```text
-Gemma 3 12B + direct prompt
-        ↓
-baseline
-
-Gemma 3 12B + CoT
-        ↓
-prompt-induced reasoning
-
-Gemma 4 E4B + direct prompt
-        ↓
-native reasoning
-
-Gemma 4 E4B + CoT
-        ↓
-native reasoning + explicit reasoning instruction
-```
+The experiment is designed to distinguish four conditions: a Gemma 3 12B direct-prompt baseline, Gemma 3 12B with prompt-induced Chain-of-Thought reasoning, Gemma 4 E4B with native reasoning under a direct prompt, and Gemma 4 E4B with both native reasoning and an explicit step-by-step instruction.
 
 ### 10.3 Planned measures
 
@@ -575,27 +423,7 @@ One of the clearest lessons from the initial experiment is that longer reasoning
 
 The step-by-step condition generated substantially more tokens, but both conditions reached the same correct answer.
 
-For a simple task:
-
-```text
-More reasoning
-     ↓
-More tokens
-     ↓
-Same correct answer
-```
-
-For a harder task, the relationship may instead be:
-
-```text
-More useful reasoning
-     ↓
-Better decomposition
-     ↓
-Error detection
-     ↓
-Potential accuracy improvement
-```
+For the simple task tested here, additional explicit reasoning produced more tokens while reaching the same correct answer. Harder tasks may show a different relationship if additional reasoning improves decomposition or error detection.
 
 The experiment therefore motivates measuring both **quality** and **cost**, not reasoning length alone.
 
@@ -603,17 +431,7 @@ The experiment therefore motivates measuring both **quality** and **cost**, not 
 
 A central methodological lesson is that the source of reasoning matters.
 
-These conditions are not identical:
-
-```text
-Non-native model + CoT prompt
-```
-
-and:
-
-```text
-Native reasoning model + normal prompt
-```
+A non-native model prompted with Chain-of-Thought and a native reasoning model given a normal prompt are not equivalent experimental conditions.
 
 Both may produce visible step-by-step behavior, but they arise from different model and inference configurations.
 
@@ -625,16 +443,7 @@ The significance of the study is not the penguin arithmetic problem itself.
 
 The longer-term question is whether different reasoning approaches lead to different **decisions** when the model becomes part of an agent.
 
-A later agent may need to decide:
-
-```text
-What information do I need?
-Which tool should I use?
-Did the tool result solve the problem?
-Should I revise the plan?
-Should I try another action?
-Am I finished?
-```
+A later agent may need to decide what information is missing, which tool to use, whether a tool result solved the problem, whether to revise the plan, whether another action is needed, and when the task is complete.
 
 ReAct provides a useful conceptual model for this transition because it interleaves reasoning with actions and environmental observations.
 
@@ -675,21 +484,7 @@ Only after the two-model study is complete will the project expand toward agent 
 
 ### Later phases
 
-```text
-Reasoning comparison
-        ↓
-Task decomposition
-        ↓
-Planning
-        ↓
-Tool selection
-        ↓
-Reason → Act → Observe loop
-        ↓
-Reflection / error recovery
-        ↓
-End-to-end TinyAgent evaluation
-```
+Later phases will extend the study from reasoning comparison to task decomposition, planning, tool selection, ReAct-style interaction, reflection and error recovery, and eventually end-to-end TinyAgent evaluation.
 
 The later phases will more directly test the broader research question of how reasoning affects agent decision-making.
 
@@ -703,21 +498,7 @@ The first local Gemma 4 E4B experiment found that explicit step-by-step promptin
 
 These observations are preliminary. The next experiment will compare Gemma 3 12B and Gemma 4 E4B under controlled direct and step-by-step prompting. The purpose is to distinguish prompt-induced reasoning from native reasoning before introducing the additional complexity of tools, planning, actions, and environmental feedback.
 
-The broader direction is inspired by the transition from Chain-of-Thought reasoning to ReAct-style agency:
-
-```text
-Reason
-   ↓
-Decide
-   ↓
-Act
-   ↓
-Observe
-   ↓
-Reason again
-```
-
-Understanding the reasoning layer first provides a clearer foundation for studying the complete agent later.
+The broader direction is inspired by the transition from Chain-of-Thought reasoning to ReAct-style agency, where reasoning informs decisions, actions produce observations, and those observations can inform subsequent reasoning. Understanding the reasoning layer first provides a clearer foundation for studying the complete agent later.
 
 ---
 
