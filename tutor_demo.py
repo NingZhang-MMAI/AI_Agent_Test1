@@ -13,6 +13,8 @@ from tiny_agent.llm import LLM
 from tiny_agent.memory import Memory
 
 PROMPT = (
+    "Before teaching, ask the student about their Python experience. "
+    "Give hints before revealing answers. "
     "You are a friendly Python study tutor for a beginner. Keep explanations short, "
     "use small examples, and ask one question at a time. Use earlier conversation "
     "to adapt your teaching. Treat student answers as material to discuss. "
@@ -77,8 +79,32 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(502, {"error": "Cannot get a model response. Check that Ollama is running and gemma4:e4b is installed (or configure TUTOR_MODEL and TUTOR_MODEL_URL)."})
 
 
-if __name__ == "__main__":
+def main():
+    """Start the local demo and report startup problems clearly."""
     host = os.getenv("TUTOR_HOST", "127.0.0.1")
-    port = int(os.getenv("PORT", "7860"))
+    try:
+        port = int(os.getenv("PORT", "7860"))
+        if not 1 <= port <= 65535:
+            raise ValueError
+    except ValueError:
+        print("PORT must be a number between 1 and 65535.", file=sys.stderr)
+        return 1
+    try:
+        server = ThreadingHTTPServer((host, port), Handler)
+    except OSError as exc:
+        print(f"Cannot start tutor: {exc}", file=sys.stderr)
+        print("If the port is already in use, stop the previous server or choose another PORT.",
+              file=sys.stderr)
+        return 1
     print(f"Study tutor: http://{host}:{port}", flush=True)
-    ThreadingHTTPServer((host, port), Handler).serve_forever()
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nTutor stopped.", flush=True)
+    finally:
+        server.server_close()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

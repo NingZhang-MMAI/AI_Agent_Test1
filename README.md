@@ -2,6 +2,29 @@
 
 A local experimental project for understanding how reasoning contributes to AI-agent decision making.
 
+## Completed project — Little Tutor
+
+Completed learning milestone: October 29, 2026. Preserved as a local Python study
+tutor powered by Ollama and TinyAgent. Milestone tag: `little-tutor-v1`.
+
+Implemented and practiced: browser chat, system prompting, conversation memory,
+one model call per turn, trajectory recording, and Pdb debugging. The live demo
+was tested with `gemma4:e4b`, including a successful chat response.
+
+The breakpoint in `src/tiny_agent/agent.py` is intentionally retained. After
+sending a message, enter `pp messages` at `(Pdb)` to inspect input, then `c` to
+continue. The webpage waits while debugging is paused. To run without pausing:
+
+```powershell
+$env:PYTHONBREAKPOINT = "0"
+python tutor_demo.py
+```
+
+Open the local address printed by the server. To restore debugging, set
+`$env:PYTHONBREAKPOINT = "pdb.set_trace"` before restarting. This milestone does
+not include tool execution, planning, or public hosting. Conversation memory is
+temporary and clears on refresh or New session.
+
 ## Working Paper
 
 **From Reasoning to Agency: A Local Experimental Study of Reasoning as a Decision Foundation for AI Agents**

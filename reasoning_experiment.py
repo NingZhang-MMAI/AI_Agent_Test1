@@ -43,7 +43,7 @@ def run_once(agent: TinyAgent, label: str, prompt: str) -> dict:
         "label": label,
         "prompt": prompt,
         "content": answer,
-        "reasoning": response.reasoning,
+        "reasoning": response.thought or None,
         "metadata": response.metadata or {},
     }
 

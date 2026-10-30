@@ -25,6 +25,7 @@ class TinyAgent:
     def _step(self) -> str:
         """Perform a single step."""
         messages = self.memory.get_messages()
+        breakpoint()  # Inspect messages before sending them to the model.
         response = self.llm.generate(messages)
         self.memory.add("assistant", response.content)
         self.trajectory.add(response)
